@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="images/JuARaVeInSy.png">
+
+    <title>Jarvis</title>
+    <style></style>
+</head>
+<body onload = "greeting()">
+    <div>
+    <div class="wrapper">
+        <div class="actions"></div>
+            <button id="start" onclick=talk()>Talk</button>
+            <button id="end">End</button>
+        </div>
+        <div id="transcript">
+
+        </div>
+    </div>
+    <script>
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.interimResults = true;
+        const transcript_element = document.getElementById("transcript");
+        const talk_button = document.getElementById("start");
+        const end_button = document.getElementById("end");
+
+        let p = document.createElement("p");
+        transcript_element.appendChild(p);
+        recognition.addEventListener("result", (e) => {
+            debugger;
+            const results = Array.from(e.results)
+            console.log(results, "rrrr");
+            const result = results[0];
+            console.log(result, "resulttt");
+            const transcript = result[0].transcript;
+            // const transcript = Array.from(e.results/)
+            // .map(result = results[0])
+            // .map(result = results.transcript)
+            // .join("");
+            console.log(transcript, "transcript")
+            p.textContent = transcript;
+            if(e.results[0].isFinal) {
+                p = document.createElement("p");
+                p.textContent = transcript;
+                transcript_element.appendChild(p);
+                p.textContent = ""
+
+                if(transcript.includes("YouTube")) {
+                    window.open("https://www.youtube.com/")
+                }
+                if(transcript.includes("Facebook")) {
+                    window.open("https://www.facebook.com/")
+                }
+                if(transcript.includes("Gmail")) {
+                    window.open("https://www.gmail.com/")
+                }
+                if(transcript.includes("WhatsApp")) {
+                    window.open("https://web.whatsapp.com/")
+                }
+                if(transcript.includes("QA")) {
+                    window.open("https://mseva-qa.lgpunjab.gov.in/employee/")
+                }
+                if(transcript.includes("UAT")) {
+                    window.open("https://mseva-uat.lgpunjab.gov.in/employee/")
+                }
+                if(transcript.includes("GitHub" || "git")) {
+                    window.open("https://github.com/")
+                }
+            }
+        })
+
+        function greeting() {
+            alert("Have a good day !");
+        }
+
+        function talk() {
+            debugger;
+            recognition.start();
+            setTimeout(talk_button.disabled = false, 10000);
+            recognition.stop();
+        }
+        recognition.addEventListener("end", () =>{
+            end_button.disabled = false;
+            talk_button.disabled = true;
+        });
+
+        // talk_button.addEventListener("click", () =>{
+        //     // end_button.disabled = false;
+        //     // talk_button.disabled = true;
+        //     recognition.start();
+        //     setTimeout(talk_button.disabled = false, 10000);
+        //     recognition.stop();
+
+        // });
+
+        end_button.addEventListener("click", () => {
+            end_button.disabled = true;
+            talk_button.disabled = false;
+            recognition.stop();
+        });
+    </script>
+    </div>
+</body>
+</html>
